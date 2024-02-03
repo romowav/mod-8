@@ -5,6 +5,11 @@ const tareaSchema = mongoose.Schema({
     type: String,
     require: [true, 'Por favor agrega una description']
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true,
+    ref: 'User'
+  }
 }, {
     timestamps: true
 }) 
