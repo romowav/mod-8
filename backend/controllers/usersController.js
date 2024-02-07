@@ -44,12 +44,34 @@ const postUser = asyncHandler(async (req, res) => {
 })
 
 const loginUser = asyncHandler(async (req, res) => {
-  res.status(201).json({message: 'login Usuario'})
+  const { email, password } = req.body
+
+  const user = await User.findOne({email})
+  
+  // Si user existe verificamos el password igual
+  if (user && (await bcrypt.compare(password, user.password))) {
+    res.status(200).json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+      token: generarToken(user.id)
+    })
+  }else {
+    res.status(400)
+    throw new Error('Incorrect username or password')
+  }
 })
 
 const getUser = asyncHandler(async (req, res) => {
-  res.status(201).json({message: 'get datos Usuario'})
+  res.status(201).json(req.user)
 })
+
+// Funcion para generar Token
+const generarToken = (id_user) => {
+  return jwt.sign({id_user}, process.env.JWT_SECRET, {
+    expiresIn: '1d'
+  })
+}
 
 module.exports = {
   postUser,
