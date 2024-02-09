@@ -8,8 +8,7 @@ const getTareas = asyncHandler( async (req, res) => {
 
 })
 
-const postTareas = asyncHandler( async (req, res) => {si
-
+const postTareas = asyncHandler( async (req, res) => {
   if(!req.body.description){
     res.status(400)
     throw new Error('agrega una description CONTROLLER')
